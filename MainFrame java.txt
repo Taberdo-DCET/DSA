@@ -23,12 +23,12 @@ public class MainFrame extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
-        //title
+     
         title = new JLabel("Real Estate Management");
         title.setBounds(525, 10, 150, 40);
         add(title);
 
-        // Menu Buttons
+  
         btnClient = new JButton("Client");
         btnClient.setBounds(365, 50, 150, 40);
         add(btnClient);
@@ -44,13 +44,13 @@ public class MainFrame extends JFrame implements ActionListener {
         add(btnTransaction);
         btnTransaction.addActionListener(this);
 
-        //container
+ 
         mainPanel = new JPanel();
         mainPanel.setLayout(null);
         mainPanel.setBounds(10, 100, 1180, 700);
         add(mainPanel);
 
-        //panels
+
         clientPanel = new ClientPanel();
         clientPanel.setBounds(0, 0, 1165, 700);
         mainPanel.add(clientPanel);
@@ -85,4 +85,5 @@ public class MainFrame extends JFrame implements ActionListener {
             transactionPanel.setVisible(true);
         }
     }
+
 }
