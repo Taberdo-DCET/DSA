@@ -30,12 +30,12 @@ public class PropertyPanel extends JPanel implements ActionListener {
         String[] PropertyStatus = {"Owned", "Available"};
         String[] Headers = {"ID", "Location", "Price", "Status"};
 
-        //title
+
         title = new JLabel("Property Panel");
         title.setBounds(550, 10, 100, 20);
         add(title);
 
-        //text label
+
         propertyId = new JLabel("Property Id:");
         propertyId.setBounds(30, 40, 100, 20);
         add(propertyId);
@@ -61,7 +61,7 @@ public class PropertyPanel extends JPanel implements ActionListener {
         add(listProperty);
 
 
-        //Combo box
+    
         Cstatus = new JComboBox<String>(PropertyStatus);
         Cstatus.setBounds(120, 130, 200, 20);
         add(Cstatus);
@@ -71,7 +71,7 @@ public class PropertyPanel extends JPanel implements ActionListener {
         add(Csort);
         Csort.addActionListener(this);
 
-        //textfield
+ 
         TpropertyId = new JTextField();
         TpropertyId.setBounds(120, 40, 200, 20);
         add(TpropertyId);
@@ -86,16 +86,16 @@ public class PropertyPanel extends JPanel implements ActionListener {
 
 
 
-        //table
+   
         tableModel = new DefaultTableModel(Headers, 0);
         table = new JTable(tableModel);
 
-        //ScrollPane
+     
         TpropertyList = new JScrollPane(table);
         TpropertyList.setBounds(350, 70, 775, 565);
         add(TpropertyList);
 
-        //buttons
+   
         addbtn = new JButton("Add");
         addbtn.setBounds(30, 180, 290, 40);
         add(addbtn);
@@ -117,7 +117,7 @@ public class PropertyPanel extends JPanel implements ActionListener {
         selectPropertybtn.addActionListener(this);
 
 
-        // HashMap
+    
         propertyMap = new HashMap<>();
 
 
@@ -234,7 +234,7 @@ public class PropertyPanel extends JPanel implements ActionListener {
 
             Property[] properties = propertyMap.values().toArray(new Property[0]);
 
-            // Sort by location
+           
             if (selectedSort.equals("Location")) {
                 for (int i = 0; i < properties.length - 1; i++) {
                     for (int j = i + 1; j < properties.length; j++) {
@@ -249,7 +249,7 @@ public class PropertyPanel extends JPanel implements ActionListener {
                 }
             }
 
-            // Sort by price
+    
             else if (selectedSort.equals("Price")) {
                 for (int i = 0; i < properties.length - 1; i++) {
                     for (int j = i + 1; j < properties.length; j++) {
@@ -262,7 +262,7 @@ public class PropertyPanel extends JPanel implements ActionListener {
                 }
             }
 
-            // Clear and refresh table
+     
             tableModel.setRowCount(0);
             for (int i = 0; i < properties.length; i++) {
                 Property p = properties[i];
@@ -301,3 +301,4 @@ public class PropertyPanel extends JPanel implements ActionListener {
         }
     }
 }
+
