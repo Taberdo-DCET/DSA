@@ -1,4 +1,5 @@
-Client Panel GUI
+Client PAnel Gui
+
 
 package view;
 
@@ -22,7 +23,7 @@ public class ClientPanel extends JPanel implements ActionListener {
     DefaultTableModel tableModel;
     JTable table;
 
-    private HashMap<String, PropertyPanel.Property> propertyMap;
+
     private HashMap<String, String> clientMap;
 
 
@@ -151,7 +152,7 @@ public class ClientPanel extends JPanel implements ActionListener {
         add(selectClient);
 
         // HashMap
-        propertyMap = new HashMap<>();
+
         clientMap = new HashMap<>();
 
 
@@ -272,7 +273,7 @@ public class ClientPanel extends JPanel implements ActionListener {
         }
 
 
-        
+
         else if (e.getSource() == update){
             int selectedRow = table.getSelectedRow();
 
@@ -302,7 +303,7 @@ public class ClientPanel extends JPanel implements ActionListener {
         }
 
 
-        
+
         else if (e.getSource() == selectClient){
             int selectedRow = table.getSelectedRow();
 
