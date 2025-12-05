@@ -7,9 +7,10 @@ public class Main {
 
 
     public static void main(String[] args) {
-        // This is the correct way to start a Swing app
+       
         javax.swing.SwingUtilities.invokeLater(() -> {
             new MainFrame();
         });
     }
+
 }
