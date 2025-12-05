@@ -40,12 +40,12 @@ public class ClientPanel extends JPanel implements ActionListener {
 
         ownedlistmodel = new DefaultListModel<>();
 
-        //title
+   
         title = new JLabel("Client Panel");
         title.setBounds(550, 10, 100, 20);
         add(title);
 
-        //text label
+  
         clientId = new JLabel("Client Id:");
         clientId.setBounds(30, 40, 100, 20);
         add(clientId);
@@ -78,7 +78,7 @@ public class ClientPanel extends JPanel implements ActionListener {
         searchClient.setBounds(770, 130, 150, 20);
         add(searchClient);
 
-        //textfield
+     
         TclientId = new JTextField();
         TclientId.setBounds(120, 40, 200, 20);
         add(TclientId);
@@ -99,11 +99,11 @@ public class ClientPanel extends JPanel implements ActionListener {
         TsearchClient.setBounds(850, 130, 200,20);
         add(TsearchClient);
 
-        //table
+    
         tableModel = new DefaultTableModel(headers, 0);
         table = new JTable(tableModel);
 
-        //ScrollPane
+      
         availableprprtylist = new JList<>(availablelistmodel);
         TavailableProperty = new JScrollPane(availableprprtylist);
         TavailableProperty.setBounds(30, 190, 290, 395);
@@ -120,7 +120,7 @@ public class ClientPanel extends JPanel implements ActionListener {
 
 
 
-        //buttons
+   
         addproperty = new JButton("Add Property");
         addproperty.setBounds(30, 595, 140, 40);
         addproperty.addActionListener(this);
@@ -151,14 +151,14 @@ public class ClientPanel extends JPanel implements ActionListener {
         selectClient.addActionListener(this);
         add(selectClient);
 
-        // HashMap
+  
 
         clientMap = new HashMap<>();
 
 
     }
 
-    //String binarySearch function
+ 
     public static int binarySearchString(String[] arr, String target) {
         int low = 0;
         int high = arr.length - 1;
@@ -327,6 +327,7 @@ public class ClientPanel extends JPanel implements ActionListener {
 
     }
 }
+
 
 
 
