@@ -1,0 +1,191 @@
+Transaction Panel GUI
+
+
+package view;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class TransactionPanel extends JPanel implements ActionListener {
+    private JLabel title, transid, prptyid, clntid, d8;
+    private JTextField transactionid, propertyid, clientid, date;
+    private JButton add, delete, clear, update;
+    private JScrollPane TransTable;
+
+    DefaultTableModel tableModel;
+    JTable table;
+
+    public TransactionPanel() {
+        setLayout(null);
+        String[] headers = {"Transaction ID", "Property ID", "Client ID", "Date"};
+
+
+
+
+        //Labels
+        title = new JLabel("Transaction Panel");
+        title.setBounds(550, 10, 200, 20);
+        add(title);
+
+        transid = new JLabel("Transaction ID:");
+        transid.setBounds(30, 40, 100, 20);
+        add(transid);
+
+        prptyid = new JLabel("Property ID:");
+        prptyid.setBounds(30, 70, 100, 20);
+        add(prptyid);
+
+        clntid = new JLabel("Client ID:");
+        clntid.setBounds(30, 100, 100, 20);
+        add(clntid);
+
+        d8 = new JLabel("Date (YYYY-MM-DD):");
+        d8.setBounds(30, 130, 150, 20);
+        add(d8);
+
+        //TxtFields
+        transactionid = new JTextField("Auto-Generated");
+        transactionid.setBounds(120, 40, 200, 20);
+        transactionid.setEditable(false);
+        add(transactionid);
+
+        propertyid = new JTextField();
+        propertyid.setBounds(120, 70, 200, 20);
+        add(propertyid);
+
+        clientid = new JTextField();
+        clientid.setBounds(120, 100, 200, 20);
+        add(clientid);
+
+        date = new JTextField();
+        date.setBounds(170, 130, 150, 20);
+        add(date);
+
+        //btns
+        add = new JButton("Add");
+        add.setBounds(30, 170, 140, 60);
+        add.addActionListener(this);
+        add(add);
+
+        delete = new JButton("Delete");
+        delete.setBounds(30, 240, 140, 60);
+        delete.addActionListener(this);
+        add(delete);
+
+        update = new JButton("Update");
+        update.setBounds(180, 170, 140, 60);
+        update.addActionListener(this);
+        add(update);
+
+        clear = new JButton("Clear Fields");
+        clear.setBounds(180, 240, 140, 60);
+        clear.addActionListener(this);
+        add(clear);
+
+        //table
+        tableModel = new DefaultTableModel(headers, 0);
+        table = new JTable(tableModel);
+
+        TransTable = new JScrollPane(table);
+        TransTable.setBounds(350, 40, 775, 545);
+        add(TransTable);
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() == add){
+            String trnscid = transactionid.getText().trim();
+            String prpty = propertyid.getText().trim();
+            String clnt = clientid.getText().trim();
+            String dt = date.getText().trim();
+
+
+            if (trnscid.isEmpty() || prpty.isEmpty() || clnt.isEmpty() || dt.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Input First", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+
+
+            else {
+                tableModel.addRow(new Object[]{trnscid, prpty, clnt, dt});
+
+
+
+                JOptionPane.showMessageDialog(this, "Add Succesfully", "Notification", JOptionPane.INFORMATION_MESSAGE);
+
+                propertyid.setText("");
+                clientid.setText("");
+                date.setText("");
+            }
+        }
+
+        else if (e.getSource() == delete){
+            int indexSelected = table.getSelectedRow();
+            if(indexSelected != -1){
+                tableModel.removeRow(indexSelected);
+                JOptionPane.showMessageDialog(this, "Deleted Client Info Succesfully", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Please Choose a client in the table before deleting", "Select error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        if (e.getSource() == clear){
+            String trnscid = transactionid.getText().trim();
+            String prpty = propertyid.getText().trim();
+            String clnt = clientid.getText().trim();
+            String dt = date.getText().trim();
+
+
+            if (prpty.isEmpty() && clnt.isEmpty() && dt.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Fields are clear", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+
+
+            else {
+                JOptionPane.showMessageDialog(this, "Fields Cleared Succesfully", "Notification", JOptionPane.INFORMATION_MESSAGE);
+
+                propertyid.setText("");
+                clientid.setText("");
+                date.setText("");
+            }
+        }
+
+        if (e.getSource() == update){
+            int selectedRow = table.getSelectedRow();
+
+            if(selectedRow != -1){
+                String trnscid = transactionid.getText().trim();
+                String prpty = propertyid.getText().trim();
+                String clnt = clientid.getText().trim();
+                String dt = date.getText().trim();
+
+                if (trnscid.isEmpty() || prpty.isEmpty() || clnt.isEmpty() || dt.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Please fill all the fields before updating", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                tableModel.setValueAt(trnscid, selectedRow, 0);
+                tableModel.setValueAt(prpty, selectedRow, 1);
+                tableModel.setValueAt(clnt, selectedRow, 2);
+                tableModel.setValueAt(dt, selectedRow, 3);
+
+                JOptionPane.showMessageDialog(this, "Updated Client Info Successfully", "Notification", JOptionPane.INFORMATION_MESSAGE);
+
+                propertyid.setText("");
+                clientid.setText("");
+                date.setText("");
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Please Select a client from the table to update", "Select error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+}
