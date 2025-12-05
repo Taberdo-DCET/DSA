@@ -1,0 +1,331 @@
+Client Panel GUI
+
+package view;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.LinkedList;
+
+public class ClientPanel extends JPanel implements ActionListener {
+    private DefaultListModel<String> availablelistmodel, ownedlistmodel;
+    private LinkedList<String> availablelinkedList, ownedlinkedList;
+    private JLabel title, clientId, name, contactInfo, availableProperty, ownedProperty, listClient, searchProperty, searchClient;
+    private JScrollPane TavailableProperty, TownedProperty, TlistClient;
+    private JTextField TclientId, Tname, TcontactInfo, TsearchProperty, TsearchClient;
+    private JButton add, update, delete, addproperty, removeproperty, selectClient;
+    private JList<String> availableprprtylist, ownedprprtylist;
+
+    DefaultTableModel tableModel;
+    JTable table;
+
+    private HashMap<String, PropertyPanel.Property> propertyMap;
+    private HashMap<String, String> clientMap;
+
+
+    public ClientPanel() {
+        setLayout(null);
+        String[] headers = {"Client ID", "Name", "Contact Information", "Owned Property"};
+
+        availablelinkedList = new LinkedList<>();
+        ownedlinkedList = new LinkedList<>();
+
+        availablelistmodel = new DefaultListModel<>();
+        availablelistmodel.addElement("1234 Apples BLVD");
+        availablelistmodel.addElement("5678 Butters Street");
+
+        ownedlistmodel = new DefaultListModel<>();
+
+        //title
+        title = new JLabel("Client Panel");
+        title.setBounds(550, 10, 100, 20);
+        add(title);
+
+        //text label
+        clientId = new JLabel("Client Id:");
+        clientId.setBounds(30, 40, 100, 20);
+        add(clientId);
+
+        name = new JLabel("Name:");
+        name.setBounds(30, 70, 100, 20);
+        add(name);
+
+        contactInfo = new JLabel("Contact Info:");
+        contactInfo.setBounds(30, 100, 100, 20);
+        add(contactInfo);
+
+        availableProperty = new JLabel("Property Available:");
+        availableProperty.setBounds(30, 130, 150, 20);
+        add(availableProperty);
+
+        ownedProperty = new JLabel("Property Owned:");
+        ownedProperty.setBounds(350, 70, 150, 20);
+        add(ownedProperty);
+
+        listClient = new JLabel("List of Client:");
+        listClient.setBounds(350, 130, 150, 20);
+        add(listClient);
+
+        searchProperty = new JLabel("Search:");
+        searchProperty.setBounds(30, 160, 150, 20);
+        add(searchProperty);
+
+        searchClient = new JLabel("Search:");
+        searchClient.setBounds(770, 130, 150, 20);
+        add(searchClient);
+
+        //textfield
+        TclientId = new JTextField();
+        TclientId.setBounds(120, 40, 200, 20);
+        add(TclientId);
+
+        Tname = new JTextField();
+        Tname.setBounds(120, 70, 200, 20);
+        add(Tname);
+
+        TcontactInfo = new JTextField();
+        TcontactInfo.setBounds(120, 100, 200, 20);
+        add(TcontactInfo);
+
+        TsearchProperty = new JTextField();
+        TsearchProperty.setBounds(120, 160, 200, 20);
+        add(TsearchProperty);
+
+        TsearchClient = new JTextField();
+        TsearchClient.setBounds(850, 130, 200,20);
+        add(TsearchClient);
+
+        //table
+        tableModel = new DefaultTableModel(headers, 0);
+        table = new JTable(tableModel);
+
+        //ScrollPane
+        availableprprtylist = new JList<>(availablelistmodel);
+        TavailableProperty = new JScrollPane(availableprprtylist);
+        TavailableProperty.setBounds(30, 190, 290, 395);
+        add(TavailableProperty);
+
+        ownedprprtylist = new JList<>(ownedlistmodel);
+        TownedProperty = new JScrollPane(ownedprprtylist);
+        TownedProperty.setBounds(460, 40, 250, 80);
+        add(TownedProperty);
+
+        TlistClient = new JScrollPane(table);
+        TlistClient.setBounds(350, 160, 775, 425);
+        add(TlistClient);
+
+
+
+        //buttons
+        addproperty = new JButton("Add Property");
+        addproperty.setBounds(30, 595, 140, 40);
+        addproperty.addActionListener(this);
+        add(addproperty);
+
+        removeproperty = new JButton("Remove Property");
+        removeproperty.setBounds(180, 595, 140, 40);
+        removeproperty.addActionListener(this);
+        add(removeproperty);
+
+        add = new JButton("Add");
+        add.setBounds(720, 70, 120, 40);
+        add.addActionListener(this);
+        add(add);
+
+        update = new JButton("Update");
+        update.setBounds(850, 70, 120, 40);
+        update.addActionListener(this);
+        add(update);
+
+        delete = new JButton("Delete");
+        delete.setBounds(980, 70, 120, 40);
+        delete.addActionListener(this);
+        add(delete);
+
+        selectClient = new JButton("Select Client");
+        selectClient.setBounds(650, 595, 200, 40);
+        selectClient.addActionListener(this);
+        add(selectClient);
+
+        // HashMap
+        propertyMap = new HashMap<>();
+        clientMap = new HashMap<>();
+
+
+    }
+
+    //String binarySearch function
+    public static int binarySearchString(String[] arr, String target) {
+        int low = 0;
+        int high = arr.length - 1;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int comparisonResult = target.compareTo(arr[mid]);
+
+            if (comparisonResult == 0) {
+                return mid;
+            } else if (comparisonResult < 0) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return -1;
+    }
+
+    public static int binarySearchInt(int[] numbers, int numberToFind){
+
+        int low = 0;
+        int high = numbers.length - 1;
+
+        while (low <= high){
+            int mid = (low + high) / 2;
+            int middleNumber = numbers[mid];
+
+            if (numberToFind == middleNumber){
+                return mid;
+            }
+
+            else if (numberToFind < middleNumber){
+                high = mid - 1;
+            }
+
+            else {
+                low = mid + 1;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+
+
+        if(e.getSource() == addproperty){
+
+            Object selectedProperty = availableprprtylist.getSelectedValue();
+
+            if(selectedProperty != null){
+                ownedlistmodel.addElement((String) selectedProperty);
+                availablelistmodel.removeElement(selectedProperty);
+
+            }else{
+                JOptionPane.showMessageDialog(this, "Please Choose before adding", "Select error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        else if(e.getSource() == removeproperty){
+
+            Object selectedProperty = ownedprprtylist.getSelectedValue();
+
+            if(selectedProperty != null){
+                availablelistmodel.addElement((String) selectedProperty);
+                ownedlistmodel.removeElement(selectedProperty);
+
+            }else{
+                JOptionPane.showMessageDialog(this, "Please Choose before removing", "Select error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        if (e.getSource() == add){
+            String clientid = TclientId.getText().trim();
+            String name = Tname.getText().trim();
+            String contact = TcontactInfo.getText().trim();
+
+
+            if (clientid.isEmpty() || name.isEmpty() || contact.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Input First", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (clientMap.containsKey(clientid)) {
+                JOptionPane.showMessageDialog(this, "Error: Client ID already exists!", "Id Name Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            else {
+                tableModel.addRow(new Object[]{clientid, name, contact});
+                clientMap.put(clientid, name);
+
+
+                JOptionPane.showMessageDialog(this, "Add Succesfully", "Notification", JOptionPane.INFORMATION_MESSAGE);
+
+                TclientId.setText("");
+                Tname.setText("");
+                TcontactInfo.setText("");
+            }
+        }
+
+        else if (e.getSource() == delete){
+            int indexSelected = table.getSelectedRow();
+            if(indexSelected != -1){
+                tableModel.removeRow(indexSelected);
+                JOptionPane.showMessageDialog(this, "Deleted Client Info Succesfully", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Please Choose a client in the table before deleting", "Select error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+
+        
+        else if (e.getSource() == update){
+            int selectedRow = table.getSelectedRow();
+
+            if(selectedRow != -1){
+                String clientid = TclientId.getText().trim();
+                String name = Tname.getText().trim();
+                String contact = TcontactInfo.getText().trim();
+
+                if (clientid.isEmpty() || name.isEmpty() || contact.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Please fill all the fields before updating", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                tableModel.setValueAt(clientid, selectedRow, 0);
+                tableModel.setValueAt(name, selectedRow, 1);
+                tableModel.setValueAt(contact, selectedRow, 2);
+
+                JOptionPane.showMessageDialog(this, "Updated Client Info Successfully", "Notification", JOptionPane.INFORMATION_MESSAGE);
+
+                TclientId.setText("");
+                Tname.setText("");
+                TcontactInfo.setText("");
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Please Select a client from the table to update", "Select error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+
+        
+        else if (e.getSource() == selectClient){
+            int selectedRow = table.getSelectedRow();
+
+            if(selectedRow != -1){
+                String clientid = (String) tableModel.getValueAt(selectedRow, 0);
+                String name = (String) tableModel.getValueAt(selectedRow, 1);
+                String contact = (String) tableModel.getValueAt(selectedRow, 2);
+
+                TclientId.setText(clientid);
+                Tname.setText(name);
+                TcontactInfo.setText(contact);
+
+                JOptionPane.showMessageDialog(this, "Client Info Loaded to Text Fields", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Please Select a client in the table", "Select error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+
+
+    }
+}
+
+
+

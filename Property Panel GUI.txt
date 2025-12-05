@@ -1,0 +1,303 @@
+Property Panel GUI
+
+
+package view;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Set;
+import javax.swing.table.DefaultTableModel;
+
+
+public class PropertyPanel extends JPanel implements ActionListener {
+    private JLabel title, propertyId, location, price, status, sortProperty, listProperty;
+    private JComboBox Cstatus, Csort;
+    private JScrollPane TpropertyList;
+    private JTextField TpropertyId, Tlocation, Tprice, TsearchProperty;
+    private JButton addbtn, updatebtn, deletebtn, selectPropertybtn, searchbtn;
+
+    DefaultTableModel tableModel;
+    JTable table;
+
+    private HashMap<String, Property> propertyMap;
+
+    public PropertyPanel() {
+        setLayout(null);
+        String[] sortIn = {"None", "Price", "Location"};
+        String[] PropertyStatus = {"Owned", "Available"};
+        String[] Headers = {"ID", "Location", "Price", "Status"};
+
+        //title
+        title = new JLabel("Property Panel");
+        title.setBounds(550, 10, 100, 20);
+        add(title);
+
+        //text label
+        propertyId = new JLabel("Property Id:");
+        propertyId.setBounds(30, 40, 100, 20);
+        add(propertyId);
+
+        location = new JLabel("Location:");
+        location.setBounds(30, 70, 100, 20);
+        add(location);
+
+        price = new JLabel("Price:");
+        price.setBounds(30, 100, 100, 20);
+        add(price);
+
+        status = new JLabel("Status:");
+        status.setBounds(30, 130, 100, 20);
+        add(status);
+
+        sortProperty = new JLabel("Sort:");
+        sortProperty.setBounds(760, 40, 150, 20);
+        add(sortProperty);
+
+        listProperty = new JLabel("Property List:");
+        listProperty.setBounds(350, 40, 150, 20);
+        add(listProperty);
+
+
+        //Combo box
+        Cstatus = new JComboBox<String>(PropertyStatus);
+        Cstatus.setBounds(120, 130, 200, 20);
+        add(Cstatus);
+
+        Csort = new JComboBox(sortIn);
+        Csort.setBounds(810, 40, 200, 20);
+        add(Csort);
+        Csort.addActionListener(this);
+
+        //textfield
+        TpropertyId = new JTextField();
+        TpropertyId.setBounds(120, 40, 200, 20);
+        add(TpropertyId);
+
+        Tlocation = new JTextField();
+        Tlocation.setBounds(120, 70, 200, 20);
+        add(Tlocation);
+
+        Tprice = new JTextField();
+        Tprice.setBounds(120, 100, 200, 20);
+        add(Tprice);
+
+
+
+        //table
+        tableModel = new DefaultTableModel(Headers, 0);
+        table = new JTable(tableModel);
+
+        //ScrollPane
+        TpropertyList = new JScrollPane(table);
+        TpropertyList.setBounds(350, 70, 775, 565);
+        add(TpropertyList);
+
+        //buttons
+        addbtn = new JButton("Add");
+        addbtn.setBounds(30, 180, 290, 40);
+        add(addbtn);
+        addbtn.addActionListener(this);
+
+        updatebtn = new JButton("Update");
+        updatebtn.setBounds(30, 230, 290, 40);
+        add(updatebtn);
+        updatebtn.addActionListener(this);
+
+        deletebtn = new JButton("Delete");
+        deletebtn.setBounds(30, 280, 290, 40);
+        add(deletebtn);
+        deletebtn.addActionListener(this);
+
+        selectPropertybtn = new JButton("Select Property");
+        selectPropertybtn.setBounds(30, 595, 290, 40);
+        add(selectPropertybtn);
+        selectPropertybtn.addActionListener(this);
+
+
+        // HashMap
+        propertyMap = new HashMap<>();
+
+
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == addbtn) {
+            String Id = TpropertyId.getText().trim();
+            String Loc = Tlocation.getText().trim();
+            String Pr = Tprice.getText().trim();
+            String stat = (String) Cstatus.getSelectedItem();
+
+            if (Id.isEmpty() || Loc.isEmpty() || Pr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Input First", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                double PriceText = Double.parseDouble(Tprice.getText());
+                Property property = new Property(Id, Loc, PriceText, stat);
+                if (propertyMap.containsKey(Id)) {
+                    JOptionPane.showMessageDialog(this, "Error: Property ID already exists!", "Id Name Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    propertyMap.put(Id, property);
+                    tableModel.addRow(new Object[]{Id, Loc, PriceText, stat});
+
+                    JOptionPane.showMessageDialog(this, "Add Succesfully", "Notification", JOptionPane.INFORMATION_MESSAGE);
+
+                    TpropertyId.setText("");
+                    Tlocation.setText("");
+                    Tprice.setText("");
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Please Enter Number Only", "Price Input Error", JOptionPane.ERROR_MESSAGE);
+                Tprice.setText("");
+            }
+
+        } else if (e.getSource() == deletebtn) {
+            int indeTableIndex = table.getSelectedRow();
+            if (indeTableIndex != -1) {
+                //get the Key
+                String TableVal = String.valueOf(tableModel.getValueAt(indeTableIndex, 0));
+                System.out.println(TableVal);
+
+                propertyMap.remove(TableVal);
+                tableModel.removeRow(indeTableIndex);
+                JOptionPane.showMessageDialog(this, "Delete Succesfully", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Please Select Property First", "Select Property Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (e.getSource() == selectPropertybtn) {
+            int indeTableIndex = table.getSelectedRow();
+            if (indeTableIndex != -1) {
+                //get the Key
+                String TableVal = String.valueOf(tableModel.getValueAt(indeTableIndex, 0));
+                System.out.println(TableVal);
+
+                //retrive from PropertyClass
+                Property property = propertyMap.get(TableVal);
+                TpropertyId.setText(property.getId());
+                Tlocation.setText(property.getLocation());
+                Tprice.setText(String.valueOf(property.getPrice()));
+                Cstatus.setSelectedItem(property.getStatus());
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Please Select Property First", "Select Property Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else if (e.getSource() == updatebtn) {
+            int indeTableIndex = table.getSelectedRow();
+            if (indeTableIndex == -1) {
+                JOptionPane.showMessageDialog(this, "Please Select Row First", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String Id = TpropertyId.getText().trim();
+            String Loc = Tlocation.getText().trim();
+            String Pr = Tprice.getText().trim();
+            String stat = (String) Cstatus.getSelectedItem();
+
+            if (Id.isEmpty() || Loc.isEmpty() || Pr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Input All Fields", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                double PriceText = Double.parseDouble(Pr);
+                Property property = new Property(Id, Loc, PriceText, stat);
+                propertyMap.put(Id, property);
+
+                tableModel.setValueAt(Id, indeTableIndex, 0);
+                tableModel.setValueAt(Loc, indeTableIndex, 1);
+                tableModel.setValueAt(PriceText, indeTableIndex, 2);
+                tableModel.setValueAt(stat, indeTableIndex, 3);
+
+                TpropertyId.setText("");
+                Tlocation.setText("");
+                Tprice.setText("");
+                TpropertyId.setEditable(true);
+
+                JOptionPane.showMessageDialog(this, "Update Succesfully", "Notification", JOptionPane.INFORMATION_MESSAGE);
+
+            }
+            catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Please Enter Number Only", "Price Input Error", JOptionPane.ERROR_MESSAGE);
+                Tprice.setText("");
+            }
+        }
+        else if (e.getSource() == Csort) {
+            String selectedSort = (String) Csort.getSelectedItem();
+
+            Property[] properties = propertyMap.values().toArray(new Property[0]);
+
+            // Sort by location
+            if (selectedSort.equals("Location")) {
+                for (int i = 0; i < properties.length - 1; i++) {
+                    for (int j = i + 1; j < properties.length; j++) {
+                        String loc1 = properties[i].getLocation().toLowerCase();
+                        String loc2 = properties[j].getLocation().toLowerCase();
+                        if (loc1.compareTo(loc2) > 0) {
+                            Property temp = properties[i];
+                            properties[i] = properties[j];
+                            properties[j] = temp;
+                        }
+                    }
+                }
+            }
+
+            // Sort by price
+            else if (selectedSort.equals("Price")) {
+                for (int i = 0; i < properties.length - 1; i++) {
+                    for (int j = i + 1; j < properties.length; j++) {
+                        if (properties[i].getPrice() > properties[j].getPrice()) {
+                            Property temp = properties[i];
+                            properties[i] = properties[j];
+                            properties[j] = temp;
+                        }
+                    }
+                }
+            }
+
+            // Clear and refresh table
+            tableModel.setRowCount(0);
+            for (int i = 0; i < properties.length; i++) {
+                Property p = properties[i];
+                tableModel.addRow(new Object[]{p.getId(), p.getLocation(), p.getPrice(), p.getStatus()});
+            }
+        }
+
+    }
+    class Property {
+        private String id;
+        private String location;
+        private double price;
+        private String status;
+
+        public String getId() {
+            return id;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        Property(String id, String location, double price, String status) {
+            this.id = id;
+            this.location = location;
+            this.price = price;
+            this.status = status;
+        }
+    }
+}

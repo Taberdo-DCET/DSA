@@ -1,0 +1,88 @@
+MainFrame java
+
+
+package view;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class MainFrame extends JFrame implements ActionListener {
+
+    private JPanel mainPanel;
+    private JButton btnClient, btnProperty, btnTransaction;
+    private JLabel title;
+
+    private ClientPanel clientPanel;
+    private PropertyPanel propertyPanel;
+    private TransactionPanel transactionPanel;
+
+    public MainFrame() {
+        setTitle("Real Estate Management");
+        setSize(1200, 800);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+
+        //title
+        title = new JLabel("Real Estate Management");
+        title.setBounds(525, 10, 150, 40);
+        add(title);
+
+        // Menu Buttons
+        btnClient = new JButton("Client");
+        btnClient.setBounds(365, 50, 150, 40);
+        add(btnClient);
+        btnClient.addActionListener(this);
+
+        btnProperty = new JButton("Property");
+        btnProperty.setBounds(525, 50, 150, 40);
+        add(btnProperty);
+        btnProperty.addActionListener(this);
+
+        btnTransaction = new JButton("Transaction");
+        btnTransaction.setBounds(685, 50, 150, 40);
+        add(btnTransaction);
+        btnTransaction.addActionListener(this);
+
+        //container
+        mainPanel = new JPanel();
+        mainPanel.setLayout(null);
+        mainPanel.setBounds(10, 100, 1180, 700);
+        add(mainPanel);
+
+        //panels
+        clientPanel = new ClientPanel();
+        clientPanel.setBounds(0, 0, 1165, 700);
+        mainPanel.add(clientPanel);
+
+        propertyPanel = new PropertyPanel();
+        propertyPanel.setBounds(0, 0, 1165, 700);
+        mainPanel.add(propertyPanel);
+
+        transactionPanel = new TransactionPanel();
+        transactionPanel.setBounds(0, 0, 1165, 700);
+        mainPanel.add(transactionPanel);
+
+        clientPanel.setVisible(true);
+        propertyPanel.setVisible(false);
+        transactionPanel.setVisible(false);
+
+        this.setVisible(true);
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        clientPanel.setVisible(false);
+        propertyPanel.setVisible(false);
+        transactionPanel.setVisible(false);
+
+        if (e.getSource() == btnClient) {
+            clientPanel.setVisible(true);
+        } else if (e.getSource() == btnProperty) {
+            propertyPanel.setVisible(true);
+        } else if (e.getSource() == btnTransaction) {
+            transactionPanel.setVisible(true);
+        }
+    }
+}
